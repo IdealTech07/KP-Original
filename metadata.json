@@ -1,6 +1,8 @@
 {
-  "name": "KOPI PRESS",
-  "description": "Start your day with kopi and news. A warm, conversational morning news briefing app.",
+  "name": "Kopi Press",
+  "description": "Start your day with kopi and news. Delivering Malaysia's curated 5-minute morning briefing with a warm, friendly voice.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

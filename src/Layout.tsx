@@ -1,68 +1,77 @@
 import { Outlet, Link } from "react-router-dom";
-import { Coffee, MapPin, Search } from "lucide-react";
-import { motion } from "motion/react";
+import { Coffee, MapPin } from "lucide-react";
 
 export function Layout() {
-  const currentDate = new Date().toLocaleDateString("en-MY", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const getMalayDate = () => {
+    const date = new Date();
+    const days = ["Ahad", "Isnin", "Selasa", "Rabu", "Khamis", "Jumaat", "Sabtu"];
+    const months = [
+      "Januari", "Februari", "Mac", "April", "Mei", "Jun", 
+      "Julai", "Ogos", "September", "Oktober", "November", "Disember"
+    ];
+    const dayName = days[date.getDay()];
+    const day = date.getDate();
+    const monthName = months[date.getMonth()];
+    const year = date.getFullYear();
+    return `${dayName}, ${day} ${monthName} ${year}`;
+  };
+
+  const currentDateMalay = getMalayDate();
 
   return (
-    <div className="min-h-screen flex flex-col justify-between">
+    <div className="min-h-screen bg-[#F5EDE0] text-[#2B1E1D] font-serif flex flex-col justify-between relative md:border-[12px] border-[#4A2C2A] overflow-x-hidden">
+      {/* Absolute dot overlay background */}
+      <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: "radial-gradient(#4A2C2A 1px, transparent 1px)", backgroundSize: "20px 20px" }}></div>
+
       {/* Newspaper Top Header */}
-      <header className="border-b-[3px] border-kopi-dark border-opacity-20 pb-4 pt-6 px-4 md:px-8 max-w-4xl mx-auto w-full relative z-10">
-        <div className="flex flex-col items-center justify-center gap-2 mb-4">
-          <Link to="/" className="hover:opacity-80 transition-opacity flex flex-col items-center">
-            <span className="font-display uppercase tracking-[0.2em] text-xs text-kaya-green font-bold mb-1">
-              Start your day with kopi and news.
-            </span>
-            <div className="flex items-center gap-2 text-kopi-dark">
-              <Coffee className="w-8 h-8" />
-              <h1 className="font-serif text-5xl md:text-6xl font-black uppercase tracking-tighter">
-                KOPI PRESS
-              </h1>
-            </div>
+      <header className="border-b-2 border-[#4A2C2A] mx-4 md:mx-8 pt-8 pb-6 flex flex-col justify-center relative z-10">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-4 gap-2">
+          <div className="text-xs font-sans font-bold uppercase tracking-widest text-[#C2873B] flex items-center gap-1.5">
+            <MapPin className="w-3.5 h-3.5 text-[#C2873B]" /> Kuala Lumpur • 28°C 🌤️
+          </div>
+          <div className="text-xs font-sans font-bold uppercase tracking-widest text-[#2B1E1D]/60">
+            Volume IV • Issue 142
+          </div>
+        </div>
+        
+        <div className="flex flex-col lg:flex-row justify-between items-baseline gap-4">
+          <Link to="/" className="hover:opacity-90 transition-opacity flex items-center gap-3">
+            <Coffee className="w-10 h-10 text-[#4A2C2A]" />
+            <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-[#4A2C2A]" style={{ fontFamily: "'Georgia', serif" }}>
+              KOPI PRESS
+            </h1>
           </Link>
+          <p className="text-lg md:text-xl italic text-[#4A2C2A] opacity-80">
+            "Start your day with kopi and news."
+          </p>
         </div>
 
-        {/* Date and Weather Bar */}
-        <div className="flex flex-col sm:flex-row justify-between items-center border-t border-b border-kopi-dark border-opacity-15 py-2 font-display text-[11px] uppercase tracking-widest text-kopi-dark/70">
-          <div>{currentDate}</div>
-          <div className="flex items-center gap-2 mt-2 sm:mt-0 font-bold">
-            <span>Editor's Pick</span>
-            <span className="bg-kopi-dark w-1 h-1 rounded-full"></span>
-            <span>Est. 2026</span>
-          </div>
-          <div className="flex items-center gap-1 mt-2 sm:mt-0">
-            <MapPin className="w-3 h-3" />
-            <span>Kuala Lumpur, 31°C</span>
-          </div>
+        {/* Date badge anchored at bottom-right */}
+        <div className="absolute -bottom-4 right-0 bg-[#4A2C2A] text-[#FDF6E3] px-4 py-1.5 text-xs md:text-sm font-sans font-bold uppercase tracking-widest shadow-md">
+          {currentDateMalay}
         </div>
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-grow w-full max-w-4xl mx-auto p-4 md:p-8 relative z-10">
-        <div className="bg-paper-yellow bg-opacity-60 rounded-sm p-4 md:p-8 newspaper-edge relative">
-          {/* Subtle coffee stain */}
-          <div className="coffee-stain top-12 -right-8 opacity-40"></div>
-          <div className="coffee-stain bottom-32 -left-12 opacity-30 transform -rotate-45 scale-75"></div>
+      <main className="flex-grow w-full max-w-6xl mx-auto px-4 md:px-8 py-10 relative z-10 flex flex-col">
+        <div className="flex-grow relative">
+          {/* Subtle decorative coffee stains */}
+          <div className="coffee-stain top-4 -right-16 opacity-30 select-none"></div>
+          <div className="coffee-stain bottom-24 -left-16 opacity-20 transform -rotate-45 scale-75 select-none"></div>
           
           <Outlet />
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="border-t-[3px] border-kopi-dark border-opacity-20 py-8 px-4 text-center text-kopi-dark/60 font-body text-sm max-w-4xl mx-auto w-full relative z-10">
-        <p className="mb-2 font-serif italic text-lg">"Thank you for reading the Kopi Press."</p>
-        <div className="flex justify-center gap-6 font-display uppercase text-xs tracking-wider font-bold mb-4">
-          <Link to="/" className="hover:text-gula-amber transition-colors">Home</Link>
-          <Link to="/about" className="hover:text-gula-amber transition-colors">About</Link>
-          <a href="#" className="hover:text-gula-amber transition-colors">Contact</a>
+      <footer className="bg-[#4A2C2A] text-[#FDF6E3] py-5 px-4 md:px-8 flex flex-col md:flex-row items-center justify-between text-[10px] uppercase tracking-wider relative z-10 gap-4 border-t border-[#4A2C2A]/20">
+        <div>All content curated fresh every morning by the Kopi Press team.</div>
+        <div className="flex gap-6 font-bold">
+          <Link to="/" className="hover:text-[#C2873B] transition-colors">Utama (Home)</Link>
+          <Link to="/about" className="hover:text-[#C2873B] transition-colors">Tentang Kami (About)</Link>
+          <a href="#" onClick={(e) => { e.preventDefault(); alert('Hubungi kami di: hello@kopipress.com.my'); }} className="hover:text-[#C2873B] transition-colors">Hubungi (Contact)</a>
         </div>
-        <p>&copy; {new Date().getFullYear()} Kopi Press Publications. All beans reserved.</p>
+        <div>&copy; {new Date().getFullYear()} KOPI PRESS MEDIA MALAYSIA</div>
       </footer>
     </div>
   );
